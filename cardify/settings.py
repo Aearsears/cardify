@@ -121,3 +121,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+GRAPHENE = {
+    'SCHEMA': 'app.schema.schema' # Where your Graphene schema lives
+}
+# When the changes is merged and released, remove the bottom code
+# https://github.com/graphql-python/graphene-django/pull/1275
+import django
+from django.utils.encoding import force_str
+django.utils.encoding.force_text = force_str
