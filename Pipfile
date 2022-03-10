@@ -10,6 +10,8 @@ dev = "python manage.py runserver 4000"
 django = "*"
 graphene-django = "*"
 nltk = "*"
+numpy = "*"
+matplotlib = "*"
 
 [dev-packages]
 autopep8 = "*"
