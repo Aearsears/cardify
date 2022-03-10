@@ -12,6 +12,7 @@ graphene-django = "*"
 nltk = "*"
 numpy = "*"
 matplotlib = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 autopep8 = "*"
