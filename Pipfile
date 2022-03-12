@@ -13,6 +13,8 @@ nltk = "*"
 numpy = "*"
 matplotlib = "*"
 psycopg2-binary = "*"
+setuptools = "*"
+wheel = "*"
 
 [dev-packages]
 autopep8 = "*"
