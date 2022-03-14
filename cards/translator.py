@@ -4,10 +4,17 @@ import json
 
 def get_questions(text):
     # change to env variable
-    url = 'localhost:4000/api/'
-    res = requests.put(url, data=text)
-    data = json.loads(res)
-    return data["questions"]
+    url = 'http://localhost:8888/api/'
+    headers = {"Content-Type": "application/json"}
+    # takes in JSON of {"text": "this is that. that is this.", "max_questions":int}
+    res = requests.post(url, data=text, headers=headers)
+    res.raise_for_status()
+    data = res.json()
+    print(data)
+    if data['questions']:
+        return data['questions']
+    else:
+        return data
 
 
 def format_response(text):
