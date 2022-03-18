@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Answer, Question
+from .models import Answer, Card, Question
 # Register your models here.
 
 
@@ -23,5 +23,16 @@ class AnswerAdmin(admin.ModelAdmin):
     search_fields = ['answer_text']
 
 
+class CardAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['question', 'answer', 'deck']}),
+        ('Date Information', {'fields': ['created_date']})
+    ]
+    list_display = ('id', 'question', 'answer', 'deck', 'created_date')
+    list_filter = ('answer', 'created_date')
+    search_fields = ['answer']
+
+
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(Card, CardAdmin)

@@ -30,4 +30,4 @@ class Card(models.Model):
     created_date = models.DateTimeField()
 
     def __str__(self):
-        return self.id
+        return str(self.id)
