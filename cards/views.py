@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .translator import get_questions
 import json
 
 
 def index(request):
-    return HttpResponse("hello world!")
+    return JsonResponse({"res": "hello world!"})
 
 
 def create(request):
