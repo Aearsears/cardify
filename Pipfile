@@ -15,6 +15,7 @@ psycopg2-binary = "*"
 setuptools = "*"
 wheel = "*"
 django-filter = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 autopep8 = "*"
