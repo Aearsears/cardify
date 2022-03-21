@@ -32,26 +32,14 @@ class CardType(DjangoObjectType):
         interfaces = (relay.Node,)
 
 
-class UserType(DjangoObjectType):
-    class Meta:
-        model = User
-        fields = ("id", "username", "email", "password",
-                  "groups", "user_permissions", "is_staff", "last_login", "date_joined")
-        filter_fields = {'id': ['exact'],
-                         'username': ['exact'], 'email': ['exact']}
-        interfaces = (relay.Node,)
-
-
 class Query(graphene.ObjectType):
     card = relay.Node.Field(CardType)
     question = relay.Node.Field(QuestionType)
     answer = relay.Node.Field(AnswerType)
-    user = relay.Node.Field(UserType)
 
     all_cards = DjangoFilterConnectionField(CardType)
     all_questions = DjangoFilterConnectionField(QuestionType)
     all_answers = DjangoFilterConnectionField(AnswerType)
-    all_users = DjangoFilterConnectionField(UserType)
 
     # all_cards_test = graphene.List(CardType)
 
