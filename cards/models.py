@@ -22,6 +22,8 @@ class Answer(models.Model):
     def __str__(self):
         return self.answer_text
 
+# TODO: need to clearly define the cascade property to ensure it reflects what I want it to do
+
 
 class Card(models.Model):
     question = models.OneToOneField(Question, on_delete=models.CASCADE)
