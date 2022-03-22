@@ -22,6 +22,10 @@ class UserType(DjangoObjectType):
 class Query(cards.schema.Query, decks.schema.Query, graphene.ObjectType):
     user = relay.Node.Field(UserType)
     all_users = DjangoFilterConnectionField(UserType)
+    hello = graphene.String()
+
+    def resolve_hello(root, info):
+        return "world"
 
 
 schema = graphene.Schema(query=Query)
