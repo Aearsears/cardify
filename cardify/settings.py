@@ -138,7 +138,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 GRAPHENE = {
-    'SCHEMA': 'cardify.schema.schema'  # Where your Graphene schema lives
+    'SCHEMA': 'cardify.schema.schema',  # Where your Graphene schema lives
+    'ATOMIC_MUTATIONS': True
 }
 # When the changes is merged and released, remove the bottom code
 # https://github.com/graphql-python/graphene-django/pull/1275

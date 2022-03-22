@@ -16,6 +16,7 @@ setuptools = "*"
 wheel = "*"
 django-filter = "*"
 django-cors-headers = "*"
+graphene-django-crud = "*"
 
 [dev-packages]
 autopep8 = "*"
