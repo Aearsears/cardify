@@ -1,48 +1,102 @@
 import graphene
 from graphene import relay
-from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
+from graphql import GraphQLError
+
+from graphene_django_crud.types import DjangoCRUDObjectType, resolver_hints
 
 from cards.models import Answer, Card, Question
 
-from django.contrib.auth.models import User
 
-
-class QuestionType(DjangoObjectType):
+class QuestionType(DjangoCRUDObjectType):
     class Meta:
         model = Question
-        fields = ("id", "question_text", "created_date")
-        filter_fields = {'id': ['exact'], 'question_text': ['icontains']}
+        only_fields = ("id", "question_text", "created_date")
         interfaces = (relay.Node,)
 
+    @classmethod
+    def get_queryset(cls, parent, info, **kwargs):
+        if info.context.user.is_authenticated:
+            return Question.objects.all()
+        else:
+            return Question.objects.none()
 
-class AnswerType(DjangoObjectType):
+    @classmethod
+    def mutate(cls, parent, info, instance, data, *args, **kwargs):
+        if not info.context.user.is_authenticated:
+            raise GraphQLError('Not authorized, you must be logged in.')
+
+        if "password" in data.keys():
+            instance.set_password(data.pop("password"))
+        return super().mutate(parent, info, instance, data, *args, **kwargs)
+
+
+class AnswerType(DjangoCRUDObjectType):
     class Meta:
         model = Answer
-        fields = ("id", "question", "answer_text", "created_date")
-        filter_fields = {'id': ['exact'], 'answer_text': ['icontains']}
+        only_fields = ("id", "question", "answer_text", "created_date")
         interfaces = (relay.Node,)
 
+    @classmethod
+    def get_queryset(cls, parent, info, **kwargs):
+        if info.context.user.is_authenticated:
+            return Answer.objects.all()
+        else:
+            return Answer.objects.none()
 
-class CardType(DjangoObjectType):
+    @classmethod
+    def mutate(cls, parent, info, instance, data, *args, **kwargs):
+        if not info.context.user.is_authenticated:
+            raise GraphQLError('Not authorized, you must be logged in.')
+
+        if "password" in data.keys():
+            instance.set_password(data.pop("password"))
+        return super().mutate(parent, info, instance, data, *args, **kwargs)
+
+
+class CardType(DjangoCRUDObjectType):
     class Meta:
         model = Card
-        fields = ("id", "question", "answer", "created_date")
-        filter_fields = {'id': ['exact']}
+        only_fields = ("id", "question", "answer", "created_date")
         interfaces = (relay.Node,)
+
+    @classmethod
+    def get_queryset(cls, parent, info, **kwargs):
+        if info.context.user.is_authenticated:
+            return Card.objects.all()
+        else:
+            return Card.objects.none()
+
+    @classmethod
+    def mutate(cls, parent, info, instance, data, *args, **kwargs):
+        if not info.context.user.is_authenticated:
+            raise GraphQLError('Not authorized, you must be logged in.')
+
+        if "password" in data.keys():
+            instance.set_password(data.pop("password"))
+        return super().mutate(parent, info, instance, data, *args, **kwargs)
 
 
 class Query(graphene.ObjectType):
-    card = relay.Node.Field(CardType)
-    question = relay.Node.Field(QuestionType)
-    answer = relay.Node.Field(AnswerType)
+    card = CardType.ReadField()
+    question = QuestionType.ReadField()
+    answer = AnswerType.ReadField()
 
-    all_cards = DjangoFilterConnectionField(CardType)
-    all_questions = DjangoFilterConnectionField(QuestionType)
-    all_answers = DjangoFilterConnectionField(AnswerType)
+    all_cards = CardType.BatchReadField()
+    all_questions = QuestionType.BatchReadField()
+    all_answers = AnswerType.BatchReadField()
 
-    # all_cards_test = graphene.List(CardType)
 
-    # def resolve_all_cards_test(root, info):
-    #     # We can easily optimize query count in the resolve method
-    #     return Card.objects.all()
+class Mutation(graphene.ObjectType):
+
+    question_create = QuestionType.CreateField()
+    question_update = QuestionType.UpdateField()
+    question_delete = QuestionType.DeleteField()
+
+    answer_create = AnswerType.CreateField()
+    answer_update = AnswerType.UpdateField()
+    answer_delete = AnswerType.DeleteField()
+
+    card_create = CardType.CreateField()
+    card_update = CardType.UpdateField()
+    card_delete = CardType.DeleteField()

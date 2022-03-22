@@ -1,7 +1,5 @@
 import graphene
 from graphene import relay
-from graphene_django import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django_crud.types import DjangoCRUDObjectType, resolver_hints
 
 from graphql import GraphQLError
@@ -61,7 +59,7 @@ class Query(cards.schema.Query, decks.schema.Query, graphene.ObjectType):
             return info.context.user
 
 
-class Mutation(graphene.ObjectType):
+class Mutation(cards.schema.Mutation, decks.schema.Mutation, graphene.ObjectType):
 
     user_create = UserType.CreateField()
     user_update = UserType.UpdateField()
