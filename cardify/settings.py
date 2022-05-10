@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-ivby-&^f$ts(q^jyh%(&b*gehw#a9l55cchn9%_&v@q859m2!4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["share.streamlit.io", "127.0.0.1"]
 
 
 # Application definition
@@ -95,6 +95,12 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

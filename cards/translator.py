@@ -16,8 +16,8 @@ ML_LINK = os.environ.get(
 
 
 def get_questions(text):
-    # takes in JSON of {"text": "this is that. that is this.", "max_questions":int}
-    new_thread = Thread(target=between_callback, args=(data,))
+    # takes in dict of {"text": "this is that. that is this."}
+    new_thread = Thread(target=between_callback, args=(text,))
     new_thread.start()
     new_thread.join()
     return True

@@ -15,6 +15,7 @@ django-cors-headers = "*"
 graphene-django-crud = "*"
 gunicorn = "*"
 pyppeteer = "*"
+redis = "*"
 
 [dev-packages]
 autopep8 = "*"
