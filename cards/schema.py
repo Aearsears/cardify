@@ -16,18 +16,19 @@ class QuestionType(DjangoCRUDObjectType):
 
     @classmethod
     def get_queryset(cls, parent, info, **kwargs):
-        if info.context.user.is_authenticated:
-            return Question.objects.all()
-        else:
-            return Question.objects.none()
+        return Question.objects.all()
+        # if info.context.user.is_authenticated:
+        #     return Question.objects.all()
+        # else:
+        #     return Question.objects.none()
 
     @classmethod
     def mutate(cls, parent, info, instance, data, *args, **kwargs):
-        if not info.context.user.is_authenticated:
-            raise GraphQLError('Not authorized, you must be logged in.')
+        # if not info.context.user.is_authenticated:
+        #     raise GraphQLError('Not authorized, you must be logged in.')
 
-        if "password" in data.keys():
-            instance.set_password(data.pop("password"))
+        # if "password" in data.keys():
+        #     instance.set_password(data.pop("password"))
         return super().mutate(parent, info, instance, data, *args, **kwargs)
 
 
@@ -39,10 +40,11 @@ class AnswerType(DjangoCRUDObjectType):
 
     @classmethod
     def get_queryset(cls, parent, info, **kwargs):
-        if info.context.user.is_authenticated:
-            return Answer.objects.all()
-        else:
-            return Answer.objects.none()
+        return Answer.objects.all()
+        # if info.context.user.is_authenticated:
+        #     return Answer.objects.all()
+        # else:
+        #     return Answer.objects.none()
 
     @classmethod
     def mutate(cls, parent, info, instance, data, *args, **kwargs):
@@ -62,10 +64,11 @@ class CardType(DjangoCRUDObjectType):
 
     @classmethod
     def get_queryset(cls, parent, info, **kwargs):
-        if info.context.user.is_authenticated:
-            return Card.objects.all()
-        else:
-            return Card.objects.none()
+        return Card.objects.all()
+        # if info.context.user.is_authenticated:
+        #     return Card.objects.all()
+        # else:
+        #     return Card.objects.none()
 
     @classmethod
     def mutate(cls, parent, info, instance, data, *args, **kwargs):

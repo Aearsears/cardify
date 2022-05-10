@@ -9,14 +9,12 @@ dev = "python manage.py runserver 4000"
 [packages]
 django = "*"
 graphene-django = "*"
-numpy = "*"
-matplotlib = "*"
 psycopg2-binary = "*"
-setuptools = "*"
-wheel = "*"
 django-filter = "*"
 django-cors-headers = "*"
 graphene-django-crud = "*"
+gunicorn = "*"
+pyppeteer = "*"
 
 [dev-packages]
 autopep8 = "*"

@@ -11,15 +11,16 @@ class DeckType(DjangoCRUDObjectType):
 
     class Meta:
         model = Deck
-        only_fields = ("id", "name", "created_date")
+        exclude_fields = ()
         interfaces = (relay.Node,)
 
     @classmethod
     def get_queryset(cls, parent, info, **kwargs):
-        if info.context.user.is_authenticated:
-            return Deck.objects.all()
-        else:
-            return Deck.objects.none()
+        return Deck.objects.all()
+        # if info.context.user.is_authenticated:
+        #     return Deck.objects.all()
+        # else:
+        #     return Deck.objects.none()
 
     @classmethod
     def mutate(cls, parent, info, instance, data, *args, **kwargs):
