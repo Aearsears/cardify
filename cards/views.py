@@ -6,6 +6,8 @@ import json
 
 # Create your views here.
 
+cache = caches['default']
+
 
 def index(request):
     return HttpResponse("<p>Qa are you doing here?</p>")
@@ -13,7 +15,6 @@ def index(request):
 
 def qa(request):
     if request.method == 'POST':
-        # put into redis cache and issue a message to the MQ.
         text = json.loads(request.body)
         get_questions(text)
         return HttpResponse(status=200)
@@ -25,7 +26,6 @@ def qareceive(request):
     # if request.method != 'POST' or request.method != 'GET':
     #     return HttpResponse(status=404)
     # else:
-    cache = caches['default']
     if request.method == 'POST':
         # put into redis cache and issue a message to the MQ.
         # the body will be an array of dict {question:str, answer:str}
@@ -36,8 +36,11 @@ def qareceive(request):
         cache.set(reqID, qa)
         return HttpResponse(status=200)
     elif request.method == 'GET':
-        qa = cache.get("10023")
-        return HttpResponse(qa, "None")
+        body = json.loads(request.body)
+        qa = cache.get(body["id"], "None")
+        return HttpResponse(qa)
+    else:
+        return HttpResponse(status=404)
 
 
 def find_id(qa):
