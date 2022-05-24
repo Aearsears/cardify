@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
-    'corsheaders'
+    'corsheaders',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'cardify.wsgi.application'
-
+ASGI_APPLICATION = "cardify.routing.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -100,6 +101,15 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
         'LOCATION': 'redis://127.0.0.1:6379',
     }
+}
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
 }
 
 # Password validation

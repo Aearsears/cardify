@@ -12,10 +12,10 @@ graphene-django = "*"
 psycopg2-binary = "*"
 django-filter = "*"
 django-cors-headers = "*"
-graphene-django-crud = "*"
 gunicorn = "*"
 pyppeteer = "*"
 redis = "*"
+channels = "*"
 
 [dev-packages]
 autopep8 = "*"
