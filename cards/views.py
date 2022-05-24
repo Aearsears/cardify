@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.core.cache import caches
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 from .translator import get_questions
 import json
 
@@ -34,6 +36,11 @@ def qareceive(request):
         text = json.loads(request.body)
         reqID, qa = find_id(text)
         cache.set(reqID, qa)
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            'cards',
+            {'type': 'chat_message', 'message': reqID}
+        )
         return HttpResponse(status=200)
     elif request.method == 'GET':
         body = json.loads(request.body)
