@@ -1,45 +1,50 @@
 import graphene
 from graphene import relay
+from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql import GraphQLError
 
-from graphene_django_crud.types import DjangoCRUDObjectType, resolver_hints
 from decks.models import Deck
 
 
-class DeckType(DjangoCRUDObjectType):
+class DeckType(DjangoObjectType):
 
     class Meta:
         model = Deck
         exclude_fields = ()
         interfaces = (relay.Node,)
 
-    @classmethod
-    def get_queryset(cls, parent, info, **kwargs):
-        return Deck.objects.all()
-        # if info.context.user.is_authenticated:
-        #     return Deck.objects.all()
-        # else:
-        #     return Deck.objects.none()
-
-    @classmethod
-    def mutate(cls, parent, info, instance, data, *args, **kwargs):
-        if not info.context.user.is_authenticated:
-            raise GraphQLError('Not authorized, you must be logged in.')
-
-        if "password" in data.keys():
-            instance.set_password(data.pop("password"))
-        return super().mutate(parent, info, instance, data, *args, **kwargs)
-
 
 class Query(graphene.ObjectType):
-    deck = DeckType.ReadField()
+    questions = graphene.List(DeckType)
+    question_by_id = graphene.Field(DeckType, id=graphene.String())
 
-    all_decks = DeckType.BatchReadField()
+    def resolve_questions(root, info, **kwargs):
+        # Querying a list
+        return Deck.objects.all()
+
+    def resolve_question_by_id(root, info, id):
+        # Querying a single question
+        return Deck.objects.get(pk=id)
+
+
+class UpdateDeckMutation(graphene.Mutation):
+    class Arguments:
+        # The input arguments for this mutation
+        name = graphene.String(required=True)
+        id = graphene.ID()
+
+    # The class attributes define the response of the mutation
+    question = graphene.Field(DeckType)
+
+    @classmethod
+    def mutate(cls, root, info, name, id):
+        deck = Deck.objects.get(pk=id)
+        deck.name = name
+        deck.save()
+        # Notice we return an instance of this mutation
+        return UpdateDeckMutation(deck=deck)
 
 
 class Mutation(graphene.ObjectType):
-
-    deck_create = DeckType.CreateField()
-    deck_update = DeckType.UpdateField()
-    deck_delete = DeckType.DeleteField()
+    update_question = UpdateDeckMutation.Field()
