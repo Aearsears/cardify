@@ -16,6 +16,7 @@ gunicorn = "*"
 pyppeteer = "*"
 redis = "*"
 channels = "*"
+channels-redis = "*"
 
 [dev-packages]
 autopep8 = "*"
