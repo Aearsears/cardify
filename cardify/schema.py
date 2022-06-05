@@ -44,4 +44,4 @@ class Query(cards.schema.Query, decks.schema.Query, graphene.ObjectType):
         return User.objects.get(pk=id)
 
 
-schema = graphene.Schema(query=Query)
+schema = graphene.Schema(query=Query, mutation=decks.schema.Mutation)

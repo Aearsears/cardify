@@ -8,7 +8,8 @@ from decks.models import Deck
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
-    created_date = models.DateTimeField()
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.question_text
@@ -17,7 +18,8 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.OneToOneField(Question, on_delete=models.CASCADE)
     answer_text = models.CharField(max_length=200)
-    created_date = models.DateTimeField()
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.answer_text
@@ -29,7 +31,8 @@ class Card(models.Model):
     question = models.OneToOneField(Question, on_delete=models.CASCADE)
     answer = models.OneToOneField(Answer, on_delete=models.CASCADE)
     deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
-    created_date = models.DateTimeField()
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.id)

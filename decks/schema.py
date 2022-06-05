@@ -16,14 +16,14 @@ class DeckType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    questions = graphene.List(DeckType)
-    question_by_id = graphene.Field(DeckType, id=graphene.String())
+    decks = graphene.List(DeckType)
+    deck_by_id = graphene.Field(DeckType, id=graphene.String())
 
-    def resolve_questions(root, info, **kwargs):
+    def resolve_decks(root, info, **kwargs):
         # Querying a list
         return Deck.objects.all()
 
-    def resolve_question_by_id(root, info, id):
+    def resolve_deck_by_id(root, info, id):
         # Querying a single question
         return Deck.objects.get(pk=id)
 
@@ -35,7 +35,7 @@ class UpdateDeckMutation(graphene.Mutation):
         id = graphene.ID()
 
     # The class attributes define the response of the mutation
-    question = graphene.Field(DeckType)
+    deck = graphene.Field(DeckType)
 
     @classmethod
     def mutate(cls, root, info, name, id):
@@ -46,5 +46,39 @@ class UpdateDeckMutation(graphene.Mutation):
         return UpdateDeckMutation(deck=deck)
 
 
+class CreateDeckMutation(graphene.Mutation):
+    class Arguments:
+        # The input arguments for this mutation
+        name = graphene.String(required=True)
+
+    # The class attributes define the response of the mutation
+    deck = graphene.Field(DeckType)
+
+    @classmethod
+    def mutate(cls, root, info, name):
+        deck = Deck(name=name)
+        deck.save()
+        # Notice we return an instance of this mutation
+        return CreateDeckMutation(deck=deck)
+
+
+class DeleteDeckMutation(graphene.Mutation):
+    class Arguments:
+        # The input arguments for this mutation
+        id = graphene.ID()
+
+    # The class attributes define the response of the mutation
+    deck = graphene.Field(DeckType)
+
+    @classmethod
+    def mutate(cls, root, info, id):
+        deck = Deck.objects.get(pk=id)
+        res = deck.delete()
+        # Notice we return an instance of this mutation
+        return DeleteDeckMutation(res=res)
+
+
 class Mutation(graphene.ObjectType):
-    update_question = UpdateDeckMutation.Field()
+    update_deck = UpdateDeckMutation.Field()
+    create_deck = CreateDeckMutation.Field()
+    delete_deck = DeleteDeckMutation.Field()
