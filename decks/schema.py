@@ -68,7 +68,9 @@ class DeleteDeckMutation(graphene.Mutation):
         id = graphene.ID()
 
     # The class attributes define the response of the mutation
-    deck = graphene.Field(DeckType)
+    # (1, {'blog.Entry': 1})
+    # the number of objects deleted and a dictionary with the number of deletions per object type
+    res = graphene.String()
 
     @classmethod
     def mutate(cls, root, info, id):
