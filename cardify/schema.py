@@ -44,4 +44,25 @@ class Query(cards.schema.Query, decks.schema.Query, graphene.ObjectType):
         return User.objects.get(pk=id)
 
 
-schema = graphene.Schema(query=Query, mutation=decks.schema.Mutation)
+class UpdateUserMutation(graphene.Mutation):
+    class Arguments:
+        # The input arguments for this mutation
+        username = graphene.String(required=True)
+
+    # The class attributes define the response of the mutation
+    user = graphene.Field(UserType)
+
+    @classmethod
+    def mutate(cls, root, info, id, username):
+        user = User.objects.get(pk=id)
+        user.username = username
+        user.save()
+        # Notice we return an instance of this mutation
+        return UpdateUserMutation(username=user)
+
+
+class Mutation(decks.schema.Mutation, cards.schema.Mutation, graphene.ObjectType):
+    update_user = UpdateUserMutation.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
