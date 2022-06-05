@@ -13,7 +13,6 @@ class CardInline(admin.TabularInline):
 class DeckAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('Date Information', {'fields': ['created_date']})
     ]
     list_display = ('id', 'name', 'created_date')
     list_filter = ('name', 'created_date')

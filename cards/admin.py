@@ -6,7 +6,6 @@ from .models import Answer, Card, Question
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['question_text']}),
-        ('Date Information', {'fields': ['created_date']})
     ]
     list_display = ('id', 'question_text', 'created_date')
     list_filter = ('question_text', 'created_date')
@@ -16,7 +15,6 @@ class QuestionAdmin(admin.ModelAdmin):
 class AnswerAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['answer_text', 'question']}),
-        ('Date Information', {'fields': ['created_date']})
     ]
     list_display = ('id', 'answer_text', 'question', 'created_date')
     list_filter = ('answer_text', 'created_date')
@@ -26,7 +24,6 @@ class AnswerAdmin(admin.ModelAdmin):
 class CardAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['question', 'answer', 'deck']}),
-        ('Date Information', {'fields': ['created_date']})
     ]
     list_display = ('id', 'question', 'answer', 'deck', 'created_date')
     list_filter = ('answer', 'created_date')
