@@ -3,15 +3,18 @@ import graphene
 
 
 class QuestionInput(graphene.InputObjectType):
+    question_id = graphene.Int(required=False)
     question_text = graphene.String(required=True)
 
 
 class AnswerInput(graphene.InputObjectType):
+    answer_id = graphene.Int(required=False)
     answer_text = graphene.String(required=True)
     question_id = graphene.Int(required=False)
 
 
 class CardInput(graphene.InputObjectType):
-    question_id = graphene.String(required=True)
-    answer_id = graphene.Int(required=True)
-    deck_id = graphene.Int(required=True)
+    card_id = graphene.Int(required=False)
+    question_id = graphene.String(required=False)
+    answer_id = graphene.Int(required=False)
+    deck_id = graphene.Int(required=False)

@@ -4,11 +4,12 @@ from graphene_django import DjangoObjectType
 
 from cards.inputs import AnswerInput, CardInput, QuestionInput
 from cards.models import Answer, Card, Question
+from decks.models import Deck
 
 
 class QuestionType(DjangoObjectType):
     class Meta:
-        model = Card
+        model = Question
         exclude_fields = ()
         interfaces = (relay.Node,)
 
@@ -70,9 +71,9 @@ class UpdateQuestionMutation(graphene.Mutation):
     question = graphene.Field(QuestionType)
 
     @classmethod
-    def mutate(cls, root, info, id, question_text):
-        question = Question.objects.get(pk=id)
-        question.question_text = question_text
+    def mutate(cls, root, info, questionInput):
+        question = Question.objects.get(pk=questionInput.question_id)
+        question.question_text = questionInput.question_text
         question.save()
         # Notice we return an instance of this mutation
         return UpdateQuestionMutation(question=question)
@@ -87,11 +88,12 @@ class UpdateAnswerMutation(graphene.Mutation):
     answer = graphene.Field(AnswerType)
 
     @classmethod
-    def mutate(cls, root, info, id, answer_text, question=None):
-        answer = Answer.objects.get(pk=id)
-        answer.answer_text = answer_text
-        # if(question):
-        # answer.question = question
+    def mutate(cls, root, info, answerInput):
+        answer = Answer.objects.get(pk=answerInput.answer_id)
+        answer.answer_text = answerInput.answer_text
+        if(answerInput.question_id):
+            question = Question.objects.get(pk=answerInput.question_id)
+            answer.question = question
         answer.save()
         # Notice we return an instance of this mutation
         return UpdateAnswerMutation(answer=answer)
@@ -106,8 +108,17 @@ class UpdateCardMutation(graphene.Mutation):
     card = graphene.Field(CardType)
 
     @classmethod
-    def mutate(cls, root, info, id):
-        card = Card.objects.get(pk=id)
+    def mutate(cls, root, info, cardInput):
+        card = Card.objects.get(pk=cardInput.card_id)
+        if(cardInput.question_id):
+            question = Question.objects.get(pk=cardInput.question_id)
+            card.question = question
+        if(cardInput.answer_id):
+            answer = Answer.objects.get(pk=cardInput.answer_id)
+            card.answer = answer
+        if(cardInput.deck_id):
+            deck = Deck.objects.get(pk=cardInput.deck_id)
+            card.deck = deck
         card.save()
         # Notice we return an instance of this mutation
         return UpdateCardMutation(card=card)
@@ -122,8 +133,8 @@ class CreateQuestionMutation(graphene.Mutation):
     question = graphene.Field(QuestionType)
 
     @classmethod
-    def mutate(cls, root, info, question_text):
-        question = Question(question_text=question_text)
+    def mutate(cls, root, info, questionInput):
+        question = Question(question_text=questionInput.question_text)
         question.save()
         # Notice we return an instance of this mutation
         return CreateQuestionMutation(question=question)
@@ -138,8 +149,8 @@ class CreateAnswerMutation(graphene.Mutation):
     answer = graphene.Field(AnswerType)
 
     @classmethod
-    def mutate(cls, root, info, answer_text):
-        answer = Answer(answer_text=answer_text)
+    def mutate(cls, root, info, answerInput):
+        answer = Answer(answer_text=answerInput.answer_text)
         answer.save()
         # Notice we return an instance of this mutation
         return CreateAnswerMutation(answer=answer)
@@ -154,11 +165,20 @@ class CreateCardMutation(graphene.Mutation):
     card = graphene.Field(QuestionType)
 
     @classmethod
-    def mutate(cls, root, info, card):
-        card = Card(name=card)
+    def mutate(cls, root, info, cardInput):
+        card = Card()
+        if(cardInput.question_id):
+            question = Question.objects.get(pk=cardInput.question_id)
+            card.question = question
+        if(cardInput.answer_id):
+            answer = Answer.objects.get(pk=cardInput.answer_id)
+            card.answer = answer
+        if(cardInput.deck_id):
+            deck = Deck.objects.get(pk=cardInput.deck_id)
+            card.deck = deck
         card.save()
         # Notice we return an instance of this mutation
-        return CreateCardMutation(question=card)
+        return CreateCardMutation(card=card)
 
 
 class DeleteQuestionMutation(graphene.Mutation):
