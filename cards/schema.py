@@ -151,6 +151,9 @@ class CreateAnswerMutation(graphene.Mutation):
     @classmethod
     def mutate(cls, root, info, answerInput):
         answer = Answer(answer_text=answerInput.answer_text)
+        if(answerInput.question_id):
+            question = Question.objects.get(pk=answerInput.question_id)
+            answer.question = question
         answer.save()
         # Notice we return an instance of this mutation
         return CreateAnswerMutation(answer=answer)
@@ -162,7 +165,7 @@ class CreateCardMutation(graphene.Mutation):
         cardInput = graphene.Argument(CardInput, required=True)
 
     # The class attributes define the response of the mutation
-    card = graphene.Field(QuestionType)
+    card = graphene.Field(CardType)
 
     @classmethod
     def mutate(cls, root, info, cardInput):
