@@ -1,9 +1,8 @@
 import graphene
 from graphene import relay
-from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django import DjangoObjectType
 
-from graphql import GraphQLError
+from cards.inputs import AnswerInput, CardInput, QuestionInput
 from cards.models import Answer, Card, Question
 
 
@@ -39,7 +38,7 @@ class Query(graphene.ObjectType):
 
     def resolve_question(root, info, id):
         # Querying a single question
-        return Card.objects.get(pk=id)
+        return Question.objects.get(pk=id)
 
     def resolve_answer(root, info, id):
         # Querying a single question
@@ -65,10 +64,9 @@ class Query(graphene.ObjectType):
 class UpdateQuestionMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        id = graphene.ID()
-        # question_text = graphene.String(required=True)
+        questionInput = graphene.Argument(QuestionInput, required=True)
 
-    # The class attributes define the response of the mutation
+        # The class attributes define the response of the mutation
     question = graphene.Field(QuestionType)
 
     @classmethod
@@ -83,9 +81,7 @@ class UpdateQuestionMutation(graphene.Mutation):
 class UpdateAnswerMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        id = graphene.ID()
-        answer_text = graphene.String(required=True)
-        # question = graphene.Argument(QuestionType)
+        answerInput = graphene.Argument(AnswerInput, required=True)
 
     # The class attributes define the response of the mutation
     answer = graphene.Field(AnswerType)
@@ -104,7 +100,7 @@ class UpdateAnswerMutation(graphene.Mutation):
 class UpdateCardMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        id = graphene.ID()
+        cardInput = graphene.Argument(CardInput, required=True)
 
     # The class attributes define the response of the mutation
     card = graphene.Field(CardType)
@@ -120,7 +116,7 @@ class UpdateCardMutation(graphene.Mutation):
 class CreateQuestionMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        question_text = graphene.String(required=True)
+        questionInput = graphene.Argument(QuestionInput, required=True)
 
     # The class attributes define the response of the mutation
     question = graphene.Field(QuestionType)
@@ -136,7 +132,7 @@ class CreateQuestionMutation(graphene.Mutation):
 class CreateAnswerMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        answer_text = graphene.String(required=True)
+        answerInput = graphene.Argument(AnswerInput, required=True)
 
     # The class attributes define the response of the mutation
     answer = graphene.Field(AnswerType)
@@ -152,7 +148,7 @@ class CreateAnswerMutation(graphene.Mutation):
 class CreateCardMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        question_text = graphene.String(required=True)
+        cardInput = graphene.Argument(CardInput, required=True)
 
     # The class attributes define the response of the mutation
     card = graphene.Field(QuestionType)
