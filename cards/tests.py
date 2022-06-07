@@ -4,11 +4,18 @@ from django.test import TestCase
 from cards.models import Answer, Card, Question
 from decks.models import Deck
 
+import json
+import base64
+from graphene_django.utils.testing import GraphQLTestCase
 # Create your tests here.
 
 
 def create_question(question_text):
     return Question.objects.create(question_text=question_text, created_date=timezone.now())
+
+
+def get_question(id):
+    return Question.objects.get(pk=id)
 
 
 def create_answer(question, answer_text):
@@ -51,3 +58,69 @@ class QuestionModelTest(TestCase):
         question = create_question(quest_txt1)
         res = question.delete()
         self.assertEqual(res[0], 1)
+
+
+class GraphQLTestCase(GraphQLTestCase):
+    def test_is_endpoint_live(self):
+        response = self.query(
+            '''
+            query hello{
+                hello
+            }
+            ''',
+            op_name='hello'
+        )
+
+        content = json.loads(response.content)
+
+        # This validates the status code and if you get errors
+        self.assertResponseNoErrors(response)
+
+    def test_get_question_by_id(self):
+        question = create_question("What is urine?")
+        response = self.query(
+            '''
+            query getQuestion($id: Int!){
+                question(id: $id) {
+                    id
+                    questionText
+                }
+            }
+            ''',
+            op_name='getQuestion',
+            variables={'id': question.id}
+        )
+
+        content = json.loads(response.content)
+
+        # This validates the status code and if you get errors
+        self.assertResponseNoErrors(response)
+        decoded = base64.b64decode(
+            content["data"]["question"]["id"])
+        num = decoded.split(b':')[1]
+        self.assertEqual(question.id, int(num))
+        self.assertEqual(question.question_text,
+                         content["data"]["question"]["questionText"])
+
+    def test_update_question(self):
+        question = create_question("What is urine?")
+        response = self.query(
+            '''
+            mutation changeQuestion($input: QuestionInput!) {
+                updateQuestion(questionInput: $input) {
+                    question{
+                        questionText
+                    }
+                }
+            }
+            ''',
+            op_name='changeQuestion',
+            input_data={'questionId': question.id,
+                        'questionText': 'What is the nervous system?'}
+        )
+
+        content = json.loads(response.content)
+        # This validates the status code and if you get errors
+        self.assertResponseNoErrors(response)
+        self.assertNotEqual(question.question_text,
+                            content["data"]["updateQuestion"]["question"]["questionText"])

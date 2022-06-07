@@ -29,9 +29,9 @@ class CardType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    card = graphene.Field(CardType, id=graphene.String())
-    question = graphene.Field(QuestionType, id=graphene.String())
-    answer = graphene.Field(AnswerType, id=graphene.String())
+    card = graphene.Field(CardType, id=graphene.Int())
+    question = graphene.Field(QuestionType, id=graphene.Int())
+    answer = graphene.Field(AnswerType, id=graphene.Int())
 
     def resolve_card(root, info, id):
         # Querying a single question
