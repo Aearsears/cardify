@@ -16,7 +16,8 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    question = models.OneToOneField(Question, on_delete=models.CASCADE)
+    question = models.OneToOneField(
+        Question, on_delete=models.CASCADE, null=True)
     answer_text = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -28,8 +29,9 @@ class Answer(models.Model):
 
 
 class Card(models.Model):
-    question = models.OneToOneField(Question, on_delete=models.CASCADE)
-    answer = models.OneToOneField(Answer, on_delete=models.CASCADE)
+    question = models.OneToOneField(
+        Question, on_delete=models.CASCADE, null=True)
+    answer = models.OneToOneField(Answer, on_delete=models.CASCADE, null=True)
     deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
