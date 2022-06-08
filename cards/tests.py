@@ -11,15 +11,15 @@ from graphene_django.utils.testing import GraphQLTestCase
 
 
 def create_question(question_text):
-    return Question.objects.create(question_text=question_text, created_date=timezone.now())
+    return Question.objects.create(question_text=question_text)
 
 
 def get_question(id):
     return Question.objects.get(pk=id)
 
 
-def create_answer(question, answer_text):
-    return Answer.objects.create(question=question, answer_text=answer_text, created_date=timezone.now())
+def create_answer(answer_text):
+    return Answer.objects.create(answer_text=answer_text)
 
 
 def create_card(question, answer, deck):
@@ -47,7 +47,6 @@ class QuestionModelTest(TestCase):
         quest_txt1 = "What is urine?"
         quest_txt2 = "What is the nervous system?"
         question = create_question(quest_txt1)
-        question = Question.objects.get(pk=question.id)
         question.question_text = quest_txt2
         question.save()
         self.assertEqual(Question.objects.get(
@@ -57,6 +56,34 @@ class QuestionModelTest(TestCase):
         quest_txt1 = "What is urine?"
         question = create_question(quest_txt1)
         res = question.delete()
+        self.assertEqual(res[0], 1)
+
+
+class AnswerModelTest(TestCase):
+
+    def test_was_answer_created_successfully(self):
+        answer = create_answer("filtered blood")
+        self.assertIsNotNone(answer)
+
+    def test_was_answer_read_successfully(self):
+        answer_txt = "filtered blood"
+        answer = create_answer(answer_txt)
+        self.assertEqual(Answer.objects.get(
+            pk=answer.id).answer_text, answer_txt)
+
+    def test_was_answer_updated_successfully(self):
+        ans_txt1 = "filtered blood"
+        ans_txt2 = "yellow liquid"
+        answer = create_answer(ans_txt1)
+        answer.answer_text = ans_txt2
+        answer.save()
+        self.assertEqual(Answer.objects.get(
+            pk=answer.id).answer_text, ans_txt2)
+
+    def test_was_answer_deleted_successfully(self):
+        ans_txt1 = "filtered blood"
+        answer = create_answer(ans_txt1)
+        res = answer.delete()
         self.assertEqual(res[0], 1)
 
 
