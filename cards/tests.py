@@ -18,8 +18,8 @@ def get_question(id):
     return Question.objects.get(pk=id)
 
 
-def create_answer(answer_text):
-    return Answer.objects.create(answer_text=answer_text)
+def create_answer(answer_text, question=None):
+    return Answer.objects.create(answer_text=answer_text, question=question)
 
 
 def create_card(question, answer, deck):
@@ -57,6 +57,13 @@ class QuestionModelTest(TestCase):
         question = create_question(quest_txt1)
         res = question.delete()
         self.assertEqual(res[0], 1)
+
+    def test_was_question_and_answer_deleted_successfully(self):
+        question = create_question("What is urine?")
+        answer = create_answer("filtered blood", question=question)
+        res = question.delete()
+        # deletes one question and one answer
+        self.assertEqual(res[0], 2)
 
 
 class AnswerModelTest(TestCase):
