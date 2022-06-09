@@ -43,9 +43,9 @@ def qareceive(request):
         )
         return HttpResponse(status=200)
     elif request.method == 'GET':
-        body = json.loads(request.body)
-        qa = cache.get(body["id"], "None")
-        return HttpResponse(qa)
+        params = request.GET
+        qa = cache.get(params.get("id"), "None")
+        return JsonResponse(qa, safe=False)
     else:
         return HttpResponse(status=404)
 
