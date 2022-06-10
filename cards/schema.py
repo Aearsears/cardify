@@ -187,7 +187,7 @@ class CreateCardMutation(graphene.Mutation):
 class DeleteQuestionMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        id = graphene.ID()
+        id = graphene.ID(required=True)
 
     # The class attributes define the response of the mutation
     # (1, {'blog.Entry': 1})
@@ -205,7 +205,7 @@ class DeleteQuestionMutation(graphene.Mutation):
 class DeleteAnswerMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        id = graphene.ID()
+        id = graphene.ID(required=True)
 
     # The class attributes define the response of the mutation
     # (1, {'blog.Entry': 1})
@@ -223,7 +223,7 @@ class DeleteAnswerMutation(graphene.Mutation):
 class DeleteCardMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        id = graphene.ID()
+        id = graphene.ID(required=True)
 
     # The class attributes define the response of the mutation
     # (1, {'blog.Entry': 1})

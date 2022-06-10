@@ -5,6 +5,7 @@ from cards.models import Answer, Card, Question
 from decks.models import Deck
 
 import json
+from ast import literal_eval
 import base64
 from graphene_django.utils.testing import GraphQLTestCase
 # Create your tests here.
@@ -158,3 +159,25 @@ class GraphQLTestCase(GraphQLTestCase):
         self.assertResponseNoErrors(response)
         self.assertNotEqual(question.question_text,
                             content["data"]["updateQuestion"]["question"]["questionText"])
+
+    def test_delete_question(self):
+        question = create_question("What is urine?")
+        response = self.query(
+            '''
+            mutation deleteQuestion($id: ID!) {
+                deleteQuestion(id: $id) {
+                    res
+                }
+            }
+            ''',
+            op_name='deleteQuestion',
+            variables={'id': question.id}
+        )
+
+        content = json.loads(response.content)
+        tup = literal_eval(content['data']['deleteQuestion']['res'])
+        # This validates the status code and if you get errors
+        self.assertResponseNoErrors(response)
+        self.assertEqual(1, int(tup[0]))
+        with self.assertRaises(Question.DoesNotExist):
+            get_question(question.id)
