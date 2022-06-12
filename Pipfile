@@ -17,6 +17,7 @@ pyppeteer = "*"
 redis = "*"
 channels = "*"
 channels-redis = "*"
+coverage = "*"
 
 [dev-packages]
 autopep8 = "*"
