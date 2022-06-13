@@ -24,14 +24,11 @@ def create_answer(answer_text, question=None):
 
 
 def create_card(question, answer, deck):
-    return Card.objects.create(question=question, answer=answer, deck=deck, created_date=timezone.now())
-
-
-def create_deck(name):
-    return Deck.objects.create(name=name, created_date=timezone.now())
-
+    return Card.objects.create(question=question, answer=answer, deck=deck)
 
 # test CRUD for question, answer and card
+
+
 class QuestionModelTest(TestCase):
 
     def test_was_question_created_successfully(self):
