@@ -134,6 +134,35 @@ class GraphQLTestCase(GraphQLTestCase):
         self.assertEqual(question.question_text,
                          content["data"]["question"]["questionText"])
 
+    def test_create_question(self):
+        response = self.query(
+            '''
+            mutation createQuestion($input: QuestionInput!){
+                createQuestion(questionInput: $input) {
+                    question{
+                        id
+                        questionText
+                    }
+                }
+            }
+            ''',
+            op_name='createQuestion',
+            input_data={
+                'questionText': 'What is the nervous system?'}
+        )
+
+        content = json.loads(response.content)
+
+        # This validates the status code and if you get errors
+        self.assertResponseNoErrors(response)
+        decoded = base64.b64decode(
+            content["data"]["createQuestion"]["question"]["id"])
+        num = decoded.split(b':')[1]
+        question = get_question(num)
+        self.assertEqual(question.id, int(num))
+        self.assertEqual(question.question_text,
+                         content["data"]["createQuestion"]["question"]["questionText"])
+
     def test_update_question(self):
         question = create_question("What is urine?")
         response = self.query(
