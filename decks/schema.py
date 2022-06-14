@@ -1,8 +1,7 @@
 import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
-from graphql import GraphQLError
+from decks.inputs import DeckInput
 
 from decks.models import Deck
 
@@ -24,23 +23,22 @@ class Query(graphene.ObjectType):
         return Deck.objects.all()
 
     def resolve_deck_by_id(root, info, id):
-        # Querying a single question
+        # Querying a single deck
         return Deck.objects.get(pk=id)
 
 
 class UpdateDeckMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        name = graphene.String(required=True)
-        id = graphene.ID()
+        deckInput = graphene.Argument(DeckInput, required=True)
 
     # The class attributes define the response of the mutation
     deck = graphene.Field(DeckType)
 
     @classmethod
-    def mutate(cls, root, info, name, id):
-        deck = Deck.objects.get(pk=id)
-        deck.name = name
+    def mutate(cls, root, info, deckInput):
+        deck = Deck.objects.get(pk=deckInput.deck_id)
+        deck.name = deckInput.deck_name
         deck.save()
         # Notice we return an instance of this mutation
         return UpdateDeckMutation(deck=deck)
@@ -49,14 +47,14 @@ class UpdateDeckMutation(graphene.Mutation):
 class CreateDeckMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        name = graphene.String(required=True)
+        deckInput = graphene.Argument(DeckInput, required=True)
 
     # The class attributes define the response of the mutation
     deck = graphene.Field(DeckType)
 
     @classmethod
-    def mutate(cls, root, info, name):
-        deck = Deck(name=name)
+    def mutate(cls, root, info, deckInput):
+        deck = Deck(name=deckInput.deck_name)
         deck.save()
         # Notice we return an instance of this mutation
         return CreateDeckMutation(deck=deck)
