@@ -112,7 +112,7 @@ class GraphQLTestCase(GraphQLTestCase):
         question = create_question("What is urine?")
         response = self.query(
             '''
-            query getQuestion($id: Int!){
+            query getQuestion($id: ID!){
                 question(id: $id) {
                     id
                     questionText

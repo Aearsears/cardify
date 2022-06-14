@@ -78,7 +78,7 @@ class GraphQLTestCase(GraphQLTestCase):
         deck = create_deck("My Deck")
         response = self.query(
             '''
-            query getDeck($id: Int!){
+            query getDeck($id: ID!){
                 deckById(id: $id) {
                     id
                 }

@@ -16,7 +16,7 @@ class DeckType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     decks = graphene.List(DeckType)
-    deck_by_id = graphene.Field(DeckType, id=graphene.Int())
+    deck_by_id = graphene.Field(DeckType, id=graphene.ID())
 
     def resolve_decks(root, info, **kwargs):
         # Querying a list
