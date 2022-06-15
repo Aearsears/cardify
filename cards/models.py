@@ -33,6 +33,8 @@ class Card(models.Model):
         Question, on_delete=models.SET_NULL, null=True)
     answer = models.OneToOneField(Answer, on_delete=models.SET_NULL, null=True)
     deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
+    question_text = models.CharField(max_length=200, null=True)
+    answer_text = models.CharField(max_length=200, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
