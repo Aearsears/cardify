@@ -23,7 +23,8 @@ class AnswerAdmin(admin.ModelAdmin):
 
 class CardAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['question', 'answer', 'deck']}),
+        (None, {'fields': ['question', 'answer',
+         'deck', 'question_text', 'answer_text']}),
     ]
     list_display = ('id', 'question', 'answer', 'deck', 'created_date')
     list_filter = ('answer', 'created_date')
