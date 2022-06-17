@@ -16,5 +16,7 @@ class AnswerInput(graphene.InputObjectType):
 class CardInput(graphene.InputObjectType):
     card_id = graphene.ID(required=False)
     question_id = graphene.ID(required=False)
+    question_text = graphene.String(required=True)
     answer_id = graphene.ID(required=False)
+    answer_text = graphene.String(required=True)
     deck_id = graphene.ID(required=False)

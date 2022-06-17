@@ -23,9 +23,20 @@ def create_answer(answer_text, question=None):
     return Answer.objects.create(answer_text=answer_text, question=question)
 
 
-def create_card(question, answer, deck):
-    return Card.objects.create(question=question, answer=answer, deck=deck)
+def create_card(question_text, answer_text, deck):
+    return Card.objects.create(question_text=question_text, answer_text=answer_text, deck=deck)
 
+
+def get_card(id):
+    return Card.objects.get(pk=id)
+
+
+def create_deck(name):
+    return Deck.objects.create(name=name)
+
+
+def get_deck(id):
+    return Deck.objects.get(pk=id)
 # test CRUD for question, answer and card
 
 
@@ -89,6 +100,37 @@ class AnswerModelTest(TestCase):
         ans_txt1 = "filtered blood"
         answer = create_answer(ans_txt1)
         res = answer.delete()
+        self.assertEqual(res[0], 1)
+
+
+class CardModelTest(TestCase):
+
+    def test_was_card_created_successfully(self):
+        deck = create_deck("myDeck")
+        card = create_card(deck=deck, question_text="what is a prime number?",
+                           answer_text="a number only divisible by itself and one.")
+        self.assertIsNotNone(card)
+
+    def test_was_card_read_successfully(self):
+        deck = create_deck("myDeck")
+        card = create_card(deck=deck, question_text="what is a prime number?",
+                           answer_text="a number only divisible by itself and one.")
+        self.assertIsNotNone(get_card(card.id))
+
+    def test_was_card_updated_successfully(self):
+        deck = create_deck("myDeck")
+        card = create_card(deck=deck, question_text="what is a prime number?",
+                           answer_text="a number only divisible by itself and one.")
+        new_answer = "7 continents on the earth"
+        card.answer_text = new_answer
+        card.save()
+        self.assertEqual(get_card(card.id).answer_text, new_answer)
+
+    def test_was_card_deleted_successfully(self):
+        deck = create_deck("myDeck")
+        card = create_card(deck=deck, question_text="what is a prime number?",
+                           answer_text="a number only divisible by itself and one.")
+        res = card.delete()
         self.assertEqual(res[0], 1)
 
 

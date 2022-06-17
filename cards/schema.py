@@ -119,6 +119,10 @@ class UpdateCardMutation(graphene.Mutation):
         if(cardInput.deck_id):
             deck = Deck.objects.get(pk=cardInput.deck_id)
             card.deck = deck
+        if(cardInput.answer_text):
+            card.answer_text = cardInput.answer_text
+        if(cardInput.question_text):
+            card.question_text = cardInput.question_text
         card.save()
         # Notice we return an instance of this mutation
         return UpdateCardMutation(card=card)
@@ -179,6 +183,10 @@ class CreateCardMutation(graphene.Mutation):
         if(cardInput.deck_id):
             deck = Deck.objects.get(pk=cardInput.deck_id)
             card.deck = deck
+        if(cardInput.answer_text):
+            card.answer_text = cardInput.answer_text
+        if(cardInput.question_text):
+            card.question_text = cardInput.question_text
         card.save()
         # Notice we return an instance of this mutation
         return CreateCardMutation(card=card)

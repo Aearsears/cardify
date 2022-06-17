@@ -32,6 +32,7 @@ class Card(models.Model):
     question = models.OneToOneField(
         Question, on_delete=models.SET_NULL, null=True)
     answer = models.OneToOneField(Answer, on_delete=models.SET_NULL, null=True)
+    # a card must be asscoiated with a deck
     deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
     question_text = models.CharField(max_length=200, null=True)
     answer_text = models.CharField(max_length=200, null=True)
