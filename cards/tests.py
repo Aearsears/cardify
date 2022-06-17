@@ -23,6 +23,10 @@ def create_answer(answer_text, question=None):
     return Answer.objects.create(answer_text=answer_text, question=question)
 
 
+def get_answer(id):
+    return Answer.objects.get(pk=id)
+
+
 def create_card(question_text, answer_text, deck):
     return Card.objects.create(question_text=question_text, answer_text=answer_text, deck=deck)
 
@@ -49,8 +53,7 @@ class QuestionModelTest(TestCase):
     def test_was_question_read_successfully(self):
         quest_txt = "What is urine?"
         question = create_question(quest_txt)
-        self.assertEqual(Question.objects.get(
-            pk=question.id).question_text, quest_txt)
+        self.assertEqual(get_question(question.id).question_text, quest_txt)
 
     def test_was_question_updated_successfully(self):
         quest_txt1 = "What is urine?"
@@ -58,8 +61,7 @@ class QuestionModelTest(TestCase):
         question = create_question(quest_txt1)
         question.question_text = quest_txt2
         question.save()
-        self.assertEqual(Question.objects.get(
-            pk=question.id).question_text, quest_txt2)
+        self.assertEqual(get_question(question.id).question_text, quest_txt2)
 
     def test_was_question_deleted_successfully(self):
         quest_txt1 = "What is urine?"
@@ -84,8 +86,7 @@ class AnswerModelTest(TestCase):
     def test_was_answer_read_successfully(self):
         answer_txt = "filtered blood"
         answer = create_answer(answer_txt)
-        self.assertEqual(Answer.objects.get(
-            pk=answer.id).answer_text, answer_txt)
+        self.assertEqual(get_answer(answer.id).answer_text, answer_txt)
 
     def test_was_answer_updated_successfully(self):
         ans_txt1 = "filtered blood"
@@ -93,8 +94,7 @@ class AnswerModelTest(TestCase):
         answer = create_answer(ans_txt1)
         answer.answer_text = ans_txt2
         answer.save()
-        self.assertEqual(Answer.objects.get(
-            pk=answer.id).answer_text, ans_txt2)
+        self.assertEqual(get_answer(answer.id).answer_text, ans_txt2)
 
     def test_was_answer_deleted_successfully(self):
         ans_txt1 = "filtered blood"
