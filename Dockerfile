@@ -8,6 +8,8 @@ ENV PYTHONUNBUFFERED=1 \
     PORT=8000 \
     WEB_CONCURRENCY=3
 
+RUN sudo apt install libpq-dev python3-dev
+
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
