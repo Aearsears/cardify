@@ -20,6 +20,7 @@ channels = "*"
 channels-redis = "*"
 coverage = "*"
 django-environ = "*"
+django-heroku = "*"
 
 [dev-packages]
 autopep8 = "*"
