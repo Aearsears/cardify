@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from django.utils.encoding import force_str
 import django
 from pathlib import Path
+import environ
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,12 +24,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ivby-&^f$ts(q^jyh%(&b*gehw#a9l55cchn9%_&v@q859m2!4'
+SECRET_KEY = env('DJANGO_SECRET_KEY',
+                 default='django-insecure-$lko+#jpt#ehi5=ms9(6s%&6fsg%r2ag2xu_2zj1ibsj$pckud')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DJANGO_DEBUG", True)
 
-ALLOWED_HOSTS = ["share.streamlit.io", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["share.streamlit.io", "127.0.0.1",
+                 "localhost", "cardify-ui.netlify.app"]
 
 
 # Application definition
@@ -58,9 +62,10 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"
+    "http://localhost:3000", "https://cardify-ui.netlify.app/"
 ]
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000",
+                        "https://cardify-ui.netlify.app/"]
 
 ROOT_URLCONF = 'cardify.urls'
 

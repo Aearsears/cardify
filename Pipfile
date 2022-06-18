@@ -19,6 +19,7 @@ redis = "*"
 channels = "*"
 channels-redis = "*"
 coverage = "*"
+django-environ = "*"
 
 [dev-packages]
 autopep8 = "*"
