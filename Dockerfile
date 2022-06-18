@@ -4,7 +4,6 @@ WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app \
-    DJANGO_SETTINGS_MODULE=django_heroku.settings \
     PORT=8000 \
     WEB_CONCURRENCY=3
 
