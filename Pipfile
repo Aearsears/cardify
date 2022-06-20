@@ -22,6 +22,7 @@ coverage = "*"
 django-environ = "*"
 requests = "*"
 dj-database-url = "*"
+daphne = "*"
 
 [dev-packages]
 autopep8 = "*"

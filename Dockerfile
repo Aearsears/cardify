@@ -26,4 +26,4 @@ RUN useradd -u 8877 john
 USER john
 
 # shell form to get the port variable
-CMD gunicorn -b 0.0.0.0:$PORT cardify.wsgi:application
+CMD daphne -b 0.0.0.0 -p $PORT -v2 cardify.asgi:application
