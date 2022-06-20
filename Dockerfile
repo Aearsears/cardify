@@ -18,7 +18,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # add and run as non-root user
-RUN adduser -D myuser
-USER myuser
+RUN useradd -u 8877 john
+USER john
 
 CMD ["gunicorn"  , "-b", "0.0.0.0:$PORT", "cardify.wsgi:application"]
