@@ -36,7 +36,7 @@ def qareceive(request):
         # Then, when issuing a message to the MQ, issue the id
         text = json.loads(request.body)
         print("Here is response qareceive :"+text)
-        print("here is its type :" + type(text))
+        print("here is its type : " + str(type(text)))
         reqID, qa = find_id(text)
         cache.set(reqID, qa)
         channel_layer = get_channel_layer()
