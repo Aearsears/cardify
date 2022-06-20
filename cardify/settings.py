@@ -111,12 +111,11 @@ CACHES = {
         'LOCATION': redis_URL}
 }
 
-split = redis_URL.rsplit(":", 1)
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [(split[0], split[1])],
+            "hosts": [redis_URL],
         },
     },
 }
