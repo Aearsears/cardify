@@ -169,3 +169,22 @@ GRAPHENE = {
 # When the changes is merged and released, remove the bottom code
 # https://github.com/graphql-python/graphene-django/pull/1275
 django.utils.encoding.force_text = force_str
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
