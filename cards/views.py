@@ -5,6 +5,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from .translator import get_questions
 import json
+import re
 
 # Create your views here.
 
@@ -34,6 +35,8 @@ def qareceive(request):
         # need to parse the question of what is the id? Then, put into cache: id:Qand A
         # Then, when issuing a message to the MQ, issue the id
         text = json.loads(request.body)
+        print("Here is response qareceive :"+text)
+        print("here is its type :" + type(text))
         reqID, qa = find_id(text)
         cache.set(reqID, qa)
         channel_layer = get_channel_layer()
@@ -52,8 +55,10 @@ def qareceive(request):
 
 def find_id(qa):
     """takes in a list of dict {question:str,answer:str}, finds the dict that has the question of"what is the request id?", and returns a tuple (request id, modified dict without this request question) """
+    p = re.compile(
+        r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$", re.IGNORECASE)
     for index, pair in enumerate(qa):
-        if(pair["question"] == "What is the request id?"):
+        if(p.match(pair["answer"])):
             reqID = pair["answer"]
             del qa[index]
     return (reqID, qa)
