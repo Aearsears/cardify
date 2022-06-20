@@ -5,7 +5,8 @@ WORKDIR /app
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH=/app \
-    DJANGO_DEBUG=0
+    DJANGO_DEBUG=0 \
+    PYPPETEER_HOME=/app
 
 RUN apt-get update && \
     apt-get install -y build-essential libpq-dev python3-dev curl tk

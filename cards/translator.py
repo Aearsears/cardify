@@ -19,7 +19,6 @@ def get_questions(text):
     # takes in dict of {"text": "this is that. that is this."}
     new_thread = Thread(target=between_callback, args=(text,))
     new_thread.start()
-    new_thread.join()
     return True
 
 
