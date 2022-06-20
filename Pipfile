@@ -21,6 +21,7 @@ channels-redis = "*"
 coverage = "*"
 django-environ = "*"
 requests = "*"
+dj-database-url = "*"
 
 [dev-packages]
 autopep8 = "*"
