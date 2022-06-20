@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1 \
     WEB_CONCURRENCY=3
 
 RUN apt-get update && \
-    apt-get install -y build-essential libpq-dev python3-dev
+    apt-get install -y build-essential libpq-dev python3-dev curl tk
 RUN pip install --upgrade pip
 
 COPY requirements.txt ./
@@ -16,4 +16,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD [ "gunicorn", "./cardify.wsgi" ]
+CMD ["gunicorn"  , "-b", "0.0.0.0:8000", "cardify.wsgi"]

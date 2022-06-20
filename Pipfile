@@ -20,6 +20,7 @@ channels = "*"
 channels-redis = "*"
 coverage = "*"
 django-environ = "*"
+requests = "*"
 
 [dev-packages]
 autopep8 = "*"
