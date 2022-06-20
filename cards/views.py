@@ -1,3 +1,4 @@
+import uuid
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.core.cache import caches
@@ -57,8 +58,12 @@ def find_id(qa):
     """takes in a list of dict {question:str,answer:str}, finds the dict that has the question of"what is the request id?", and returns a tuple (request id, modified dict without this request question) """
     p = re.compile(
         r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$", re.IGNORECASE)
+    reqID = None
     for index, pair in enumerate(qa):
         if(p.match(pair["answer"])):
             reqID = pair["answer"]
             del qa[index]
+    # assign default reqID if none
+    if not reqID:
+        reqID = str(uuid.uuid4())
     return (reqID, qa)
