@@ -21,4 +21,4 @@ COPY . .
 RUN useradd -u 8877 john
 USER john
 
-CMD ["gunicorn"  , "-b", "0.0.0.0:$PORT", "cardify.wsgi:application"]
+CMD ["gunicorn"  , "-b", "0.0.0.0:${PORT}", "cardify.wsgi:application"]
