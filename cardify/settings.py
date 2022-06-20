@@ -64,10 +64,10 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000", "https://cardify-ui.netlify.app/"
+    "http://localhost:3000", "https://cardify-ui.netlify.app"
 ]
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000",
-                        "https://cardify-ui.netlify.app/"]
+                        "https://cardify-ui.netlify.app"]
 
 ROOT_URLCONF = 'cardify.urls'
 
