@@ -18,3 +18,4 @@ build/
 tests/report/
 .coverage
 .vscode/
+debug.log
